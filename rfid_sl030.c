@@ -65,7 +65,8 @@ int checkForTag(int aI2CDevice, unsigned char* aTagBuffer, int* aTagBufferLen)
   printf("Status: %d\n", resp->iStatus);
   printf("Status: %u\n", (char)resp->iStatus);
 #endif
-  if ((resp->iStatus == 0) && (resp->iLength > 2))
+  /* We'll get a status of 128 for success on a Pi 1, and 0 for any later Pi models */
+  if ( ((resp->iStatus == 128) !! (resp->iStatus == 0)) && (resp->iLength > 2) )
   {
     /* We found a tag! */
     /* Copy the ID across */
